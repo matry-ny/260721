@@ -1,4 +1,4 @@
-FROM php:8.0.1-fpm
+FROM php:8.0.3-fpm
 
 # Install modules
 RUN apt-get update && apt-get install -y \
@@ -31,8 +31,8 @@ RUN docker-php-ext-install zip intl mbstring pdo_mysql exif mysqli \
     && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
     && docker-php-ext-install gd
 
-#RUN pecl install imagick \
-#    && docker-php-ext-enable imagick
+RUN pecl install imagick \
+    && docker-php-ext-enable imagick
 
 RUN pecl install -o -f xdebug \
     && rm -rf /tmp/pear
