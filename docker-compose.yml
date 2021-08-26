@@ -5,6 +5,8 @@ services:
     container_name: 260721_app
     volumes:
       - ./:/var/www
+    env_file:
+      - .env
   nginx:
     image: nginx:1.21
     container_name: 260721_nginx
