@@ -1,6 +1,6 @@
 <?php
 
-//$x = ;
+$x = true;
 if ($x == 1) {
     echo 1;
 }
