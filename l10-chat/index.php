@@ -1,3 +1,13 @@
+<?php
+
+require_once __DIR__ . '/lib/comments.php';
+
+$dates = getDates();
+$currentDate = $_GET['date'] ?? current($dates);
+
+$comments = getComments($currentDate);
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,7 +26,7 @@
                 <input type="text"
                        name="username"
                        id="chat-username"
-                       value="Dmytro"
+                       value=""
                        class="form-control">
             </div>
 
@@ -26,11 +36,48 @@
                     name="comment"
                     id="chat-comment"
                     class="form-control"
-                >Test Comment <?= random_int(0, 10000) ?></textarea>
+                ></textarea>
             </div>
 
             <button type="submit" class="btn btn-success">Send</button>
         </form>
+
+        <ul class="nav nav-tabs mt-3">
+            <?php foreach ($dates as $date): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= $currentDate === $date ? 'active' : '' ?>"
+                       href="/l10-chat/index.php?date=<?= $date ?>">
+                        <?= $date ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Info</th>
+                <th scope="col">Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($comments as $comment): ?>
+                <tr>
+                    <td>
+                        Author: <b><?= $comment['name'] ?></b><br>
+                        Created: <?= date('M d, Y, H:i', $comment['created_at']) ?><br>
+                        <?php if (!empty($comment['updated_at'])): ?>
+                        Edited: <?= date('M d, Y, H:i', $comment['updated_at']) ?><br>
+                        <?php endif; ?>
+                        <a class="btn btn-sm btn-info"
+                           href="/l10-chat/edit.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">Edit</a>
+                        <a class="btn btn-sm btn-danger"
+                           href="/l10-chat/delete.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">Delete</a>
+                    </td>
+                    <td><?= nl2br($comment['comment']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
