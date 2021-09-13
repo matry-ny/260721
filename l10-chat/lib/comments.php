@@ -5,7 +5,7 @@ const MESSAGES_STORAGE = __DIR__ . '/../storage/';
 function getDates(): array
 {
     $items = scandir(MESSAGES_STORAGE);
-    $dates = preg_filter('/^\d{4}\-\d{2}\-\d{2}/', '$0', $items);
+    $dates = preg_filter('/^\d{4}-\d{2}-\d{2}/', '$0', $items);
     rsort($dates);
 
     return $dates;
