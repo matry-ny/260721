@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/lib/security.php';
+
 $name = $_POST['username'] ?? null;
 $comment = $_POST['comment'] ?? null;
 

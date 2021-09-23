@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/lib/security.php';
+
 $date = $_GET['date'] ?? null;
 $file = $_GET['file'] ?? null;
 

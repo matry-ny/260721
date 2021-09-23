@@ -1,11 +1,13 @@
 <?php
 
+require_once __DIR__ . '/lib/security.php';
 require_once __DIR__ . '/lib/comments.php';
 
 $dates = getDates();
 $currentDate = $_GET['date'] ?? current($dates);
 
 $comments = getComments($currentDate);
+$user = $_SESSION['user'];
 
 ?>
 <!doctype html>
@@ -20,13 +22,15 @@ $comments = getComments($currentDate);
 </head>
 <body>
     <div class="container">
+        <a href="/l10-chat/logout.php" class="btn btn-danger mt-3">Log Out</a>
         <form class="mt-3" method="post" action="send-message.php">
             <div class="form-block mb-3">
                 <label for="chat-username" class="form-label">Your Name</label>
                 <input type="text"
                        name="username"
                        id="chat-username"
-                       value=""
+                       value="<?= $user['name'] ?>"
+                       readonly
                        class="form-control">
             </div>
 
@@ -68,10 +72,17 @@ $comments = getComments($currentDate);
                         <?php if (!empty($comment['updated_at'])): ?>
                         Edited: <?= date('M d, Y, H:i', $comment['updated_at']) ?><br>
                         <?php endif; ?>
-                        <a class="btn btn-sm btn-info"
-                           href="/l10-chat/edit.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger"
-                           href="/l10-chat/delete.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">Delete</a>
+
+                        <?php if ($user['name'] === $comment['name']): ?>
+                            <a class="btn btn-sm btn-info"
+                               href="/l10-chat/edit.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">
+                                Edit
+                            </a>
+                            <a class="btn btn-sm btn-danger"
+                               href="/l10-chat/delete.php?date=<?= $currentDate ?>&file=<?= $comment['file'] ?>">
+                                Delete
+                            </a>
+                        <?php endif; ?>
                     </td>
                     <td><?= nl2br($comment['comment']) ?></td>
                 </tr>

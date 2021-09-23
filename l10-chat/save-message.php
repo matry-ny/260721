@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/lib/security.php';
+
 $date = $_POST['date'] ?? null;
 $file = $_POST['file'] ?? null;
 
