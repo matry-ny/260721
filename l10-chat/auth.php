@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/lib/db.php';
+
 $error = '';
 
 if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST') {
