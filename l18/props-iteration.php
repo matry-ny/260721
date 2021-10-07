@@ -25,8 +25,8 @@ class Male extends People
     }
 }
 
-$people = new People();
-foreach ($people as $property => $value) {
+$male = new Male();
+foreach ($male as $property => $value) {
     echo "{$property}: {$value}<br>";
 }
 
