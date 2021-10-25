@@ -1,13 +1,21 @@
 <?php
 
+use components\Database;
 use components\Dispatcher;
+use components\Request;
+use components\Response;
 use components\Router;
 use components\Storage;
+use components\Template;
 
 class App
 {
     public const DISPATCHER = 'dispatcher';
     public const ROUTER = 'router';
+    public const TEMPLATE = 'template';
+    public const REQUEST = 'request';
+    public const RESPONSE = 'response';
+    public const DB = 'database';
 
     private static ?self $instance = null;
 
@@ -70,7 +78,11 @@ class App
         $dispatcher = new Dispatcher($_SERVER['REQUEST_URI']);
         $this->components
             ->set(self::DISPATCHER, $dispatcher)
-            ->set(self::ROUTER, new Router($dispatcher));
+            ->set(self::ROUTER, new Router($dispatcher))
+            ->set(self::TEMPLATE, new Template(...$this->config->get('components.template')))
+            ->set(self::REQUEST, new Request())
+            ->set(self::RESPONSE, new Response())
+            ->set(self::DB, new Database(...$this->config->get('components.db')));
 
         return $this;
     }
