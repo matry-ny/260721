@@ -14,9 +14,9 @@ class Select extends AbstractQuery
     private array $fields;
     private array $order = [];
 
-    public function __construct(array $fields)
+    public function __construct(array|string|Expression $fields)
     {
-        $this->fields = $fields;
+        $this->fields = is_array($fields) ? $fields : [$fields];
     }
 
     public function from(string $table): self
@@ -43,9 +43,19 @@ class Select extends AbstractQuery
         return $this->stmt->fetchAll($fetch) ?: [];
     }
 
-    protected function getQuery(): string
+    public function scalar(?string $column = null): array
     {
-        $query = "SELECT {$this->getFieldsPart()} FROM `{$this->table}`";
+        $result = [];
+        foreach ($this->all() as $row) {
+            $result[] = $column ? $row[$column] : current($row);
+        }
+
+        return $result;
+    }
+
+    public function getQuery(): string
+    {
+        $query = "SELECT {$this->getFieldsPart()} FROM {$this->getTableName()}";
         if ($this->where) {
             $query .= $this->where->getQueryPart();
             $this->addBindings($this->where->getBindings());
@@ -59,12 +69,18 @@ class Select extends AbstractQuery
 
     private function getFieldsPart(): string
     {
-        $fields = implode('`, `', $this->fields);
-        if ($fields !== '*') {
-            $fields = "`{$fields}`";
+        $fields = [];
+        foreach ($this->fields as $field) {
+            if ($field === '*') {
+                $fields[] = $field;
+            } elseif ($field instanceof Expression) {
+                $fields[] = $field->getExpression();
+            } else {
+                $fields[] = "`{$field}`";
+            }
         }
 
-        return $fields;
+        return implode(', ', $fields);
     }
 
     private function getOrderPart(): string

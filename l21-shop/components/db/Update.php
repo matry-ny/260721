@@ -23,9 +23,9 @@ class Update extends AbstractQuery
         return $this;
     }
 
-    protected function getQuery(): string
+    public function getQuery(): string
     {
-        $query = "UPDATE `{$this->table}` SET {$this->getFieldsPart()}";
+        $query = "UPDATE {$this->getTableName()} SET {$this->getFieldsPart()}";
         if ($this->where) {
             $query .= $this->where->getQueryPart();
             $this->addBindings($this->where->getBindings());

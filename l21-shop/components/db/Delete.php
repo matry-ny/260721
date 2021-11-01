@@ -18,7 +18,7 @@ class Delete extends AbstractQuery
 
     protected function getQuery(): string
     {
-        $query = "DELETE FROM {$this->table}";
+        $query = "DELETE FROM {$this->getTableName()}";
 
         if ($this->where) {
             $query .= $this->where->getQueryPart();

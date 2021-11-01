@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\entities\User;
 use components\AbstractController;
 use components\db\Delete;
 use components\db\Insert;
@@ -12,6 +13,25 @@ class GuestController extends AbstractController
 {
     public function actionLogin(): void
     {
+        $rand = mt_rand();
+        $u = new User();
+        $u->name = "Test {$rand}";
+        $u->login = "test_{$rand}";
+        $u->password = "pass_{$rand}";
+        $u->save();
+var_dump($u);
+        exit;
+
+        $u = User::findOne(['id' => 10]);
+        var_dump($u);
+        $u->name = 'Updated By AR 4';
+        $u->login = 'updated_ar_4';
+        $u->save();
+        var_dump($u);
+//        $u = User::findAll();
+//        var_dump($u);
+
+        exit;
 //        $delete = (new Delete())
 //            ->from('users')
 //            ->where([

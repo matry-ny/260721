@@ -29,10 +29,10 @@ class Insert extends AbstractQuery
         return $this;
     }
 
-    protected function getQuery(): string
+    public function getQuery(): string
     {
         $fields = '`' . implode('`, `', $this->fields) . '`';
-        return "INSERT INTO `{$this->table}` ($fields) VALUES {$this->getValuesPart()}";
+        return "INSERT INTO {$this->getTableName()} ($fields) VALUES {$this->getValuesPart()}";
     }
 
     private function getValuesPart(): string

@@ -22,10 +22,15 @@ abstract class AbstractQuery
         return $this->stmt->execute($this->bindings);
     }
 
+    abstract protected function getQuery(): string;
+
     protected function addBindings(array $bindings): void
     {
         $this->bindings = array_merge($this->bindings, $bindings);
     }
 
-    abstract protected function getQuery(): string;
+    protected function getTableName(): string
+    {
+        return '`' . str_replace('.', '`.`', $this->table) . '`';
+    }
 }
