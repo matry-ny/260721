@@ -11,7 +11,9 @@ $variables = $this->getVariables();
  */
 
 ?>
-<h1>PRODUCT VIEW</h1>
-<?= $variables->name ?>
-<?= $variables->age ?>
-<?= $variables->gender ?>
+<h1><?= $variables->product->title ?></h1>
+<div>
+    <h3 class="text-danger">$<?= $variables->product->price ?></h3>
+    <button class="btn btn-success">Buy</button>
+</div>
+<p><?= $variables->product->description ?></p>

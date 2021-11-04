@@ -37,6 +37,7 @@ abstract class ActiveQuery
         }
 
         $object->load($data);
+        $object->isNew = false;
 
         return $object;
     }
@@ -52,6 +53,7 @@ abstract class ActiveQuery
         foreach ($data as &$row) {
             $object = new static();
             $object->load($row);
+            $object->isNew = false;
             $row = $object;
         }
         unset($row);
@@ -109,22 +111,42 @@ abstract class ActiveQuery
         return $result;
     }
 
+    public function delete(): bool
+    {
+        $result = (new Delete())
+            ->from($this->tableName())
+            ->where($this->getPrimaryCondition())
+            ->execute();
+
+        if ($result) {
+            $this->setupFields();
+            $this->isNew = true;
+        }
+
+        return $result;
+    }
+
     private function refresh(): void
     {
         $data = (new Select('*'))
             ->from($this->tableName())
-            ->where([$this->primaryKey => $this->{$this->primaryKey}])
+            ->where($this->getPrimaryCondition())
             ->one();
         $this->load($data);
+        $this->isNew = false;
     }
 
-    private function load(array $data): void
+    private function getPrimaryCondition(): array
+    {
+        return [$this->primaryKey => $this->{$this->primaryKey}];
+    }
+
+    public function load(array $data): void
     {
         foreach ($data as $column => $value) {
             $this->{$column} = $value;
             $this->oldFields[$column] = $value;
         }
-        $this->isNew = false;
     }
 
     private function setupFields(): void

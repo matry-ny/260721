@@ -5,7 +5,10 @@ namespace app\views\dto\products;
 use app\models\entities\ProductEntity;
 use app\views\dto\AbstractViewDTO;
 
-class ViewDTO extends AbstractViewDTO
+class ListDTO extends AbstractViewDTO
 {
-    public ProductEntity $product;
+    /**
+     * @var ProductEntity[]
+     */
+    public array $products;
 }

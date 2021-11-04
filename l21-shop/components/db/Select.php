@@ -43,6 +43,15 @@ class Select extends AbstractQuery
         return $this->stmt->fetchAll($fetch) ?: [];
     }
 
+    private function countRecords(): int
+    {
+        $sql = "SELECT COUNT(1) AS count FROM ({$this->getQuery()}) tmp";
+        $stmt = $this->db()->getConnection()->prepare($sql);
+        $stmt->execute($this->bindings);
+
+        return (int)$stmt->fetch(PDO::FETCH_ASSOC)['count'];
+    }
+
     public function scalar(?string $column = null): array
     {
         $result = [];

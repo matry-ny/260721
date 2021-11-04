@@ -30,4 +30,14 @@ trait ComponentsTrait
     {
         return App::get()->getComponents()->get(App::DB);
     }
+
+    public function session(): Session
+    {
+        return App::get()->getComponents()->get(App::SESSION);
+    }
+
+    public function user(): User
+    {
+        return App::get()->getComponents()->get(App::USER);
+    }
 }

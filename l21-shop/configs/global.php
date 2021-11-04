@@ -17,7 +17,8 @@ return [
             'templatesDir' => __DIR__ . '/../app/views/templates',
             'layoutsDir' => __DIR__ . '/../app/views/layouts',
             'defaultLayout' => 'main',
-            'extension' => 'php'
+            'extension' => 'php',
+            'notFoundTemplate' => '404',
         ],
     ],
 ];

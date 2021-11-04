@@ -2,7 +2,6 @@
 
 namespace components;
 
-use App;
 use app\views\dto\AbstractViewDTO;
 
 abstract class AbstractController
@@ -13,9 +12,8 @@ abstract class AbstractController
 
     public function __construct()
     {
-        $isGuest = true;
-        if ($this->isSecured && $isGuest) {
-            $this->response()->redirect($this->config()->get('authPage'));
+        if ($this->isSecured && $this->user()->isGuest()) {
+            $this->response()->goToAuth();
         }
     }
 
