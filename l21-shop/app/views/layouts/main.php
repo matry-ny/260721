@@ -1,8 +1,12 @@
 <?php
 
+use app\models\Cart;
+
 /**
  * @var \components\Template $this
  */
+
+$cart = new Cart();
 
 ?>
 <!doctype html>
@@ -16,7 +20,7 @@
     <link href="/public/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-3">
+    <div class="container mt-3" id="main-container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Shop</a>
@@ -41,8 +45,21 @@
                 </div>
             </div>
         </nav>
+        <div>
+            <a href="" class="btn btn-primary">
+                Cart: <span id="products-in-cart"><?= $cart->getProductsCount() ?></span> product(s)
+            </a>
+        </div>
         <?= $this->getContent() ?>
     </div>
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
     <script src="/public/js/bootstrap.bundle.js"></script>
+    <script src="/public/js/buy.js"></script>
+    <script>
+        $('#main-container').Buy();
+    </script>
 </body>
 </html>

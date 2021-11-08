@@ -3,6 +3,7 @@
 namespace components\db;
 
 use components\ComponentsTrait;
+use Generator;
 use InvalidArgumentException;
 use PDO;
 use RuntimeException;
@@ -42,23 +43,31 @@ abstract class ActiveQuery
         return $object;
     }
 
-    public static function findAll(array $conditions = []): array
+    /**
+     * @param array $conditions
+     * @param int $batchSize
+     * @return Generator|static[]
+     */
+    public static function findAll(array $conditions = [], int $batchSize = 1000): Generator
     {
         $object = new static();
-        $data = (new Select('*'))
+        $query =  (new Select('*'))
             ->from($object->tableName())
             ->where($conditions)
-            ->all();
+            ->limit($batchSize);
 
-        foreach ($data as &$row) {
-            $object = new static();
-            $object->load($row);
-            $object->isNew = false;
-            $row = $object;
-        }
-        unset($row);
+        $step = 0;
+        do {
+            $data = $query->offset($step * $batchSize)->all();
+            foreach ($data as $row) {
+                $object = new static();
+                $object->load($row);
+                $object->isNew = false;
+                yield $object;
+            }
 
-        return $data;
+            $step++;
+        } while (count($data) === $batchSize);
     }
 
     public function save(): bool

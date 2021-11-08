@@ -15,10 +15,10 @@ class Router
         $this->dispatcher = $dispatcher;
     }
 
-    public function run(): void
+    public function run(): mixed
     {
         $controller = $this->getController();
-        $this->callAction($controller);
+        return $this->callAction($controller);
     }
 
     private function getController(): AbstractController
@@ -40,7 +40,7 @@ class Router
         return $controller;
     }
 
-    private function callAction(AbstractController $controller): void
+    private function callAction(AbstractController $controller): mixed
     {
         $actionName = $this->dispatcher->getAction();
         $action = StringsHelper::camelize($actionName, '-');
@@ -50,7 +50,7 @@ class Router
             throw new NotFoundException("Action '{$actionName}' is undefined");
         }
 
-        $controller->{$action}(...$this->dispatcher->getParams());
+        return $controller->{$action}(...$this->dispatcher->getParams());
 //        call_user_func_array([$controller, $action], $this->dispatcher->getParams());
     }
 }

@@ -13,6 +13,7 @@ class Select extends AbstractQuery
 
     private array $fields;
     private array $order = [];
+    private ?int $offset = null;
 
     public function __construct(array|string|Expression $fields)
     {
@@ -31,6 +32,12 @@ class Select extends AbstractQuery
         return $this;
     }
 
+    public function offset(int $offset): self
+    {
+        $this->offset = $offset;
+        return $this;
+    }
+
     public function one(int $fetch = PDO::FETCH_ASSOC): ?array
     {
         $this->execute();
@@ -43,7 +50,7 @@ class Select extends AbstractQuery
         return $this->stmt->fetchAll($fetch) ?: [];
     }
 
-    private function countRecords(): int
+    public function count(): int
     {
         $sql = "SELECT COUNT(1) AS count FROM ({$this->getQuery()}) tmp";
         $stmt = $this->db()->getConnection()->prepare($sql);
@@ -72,6 +79,7 @@ class Select extends AbstractQuery
 
         $query .= $this->getOrderPart();
         $query .= $this->getLimitPart();
+        $query .= $this->getOffsetPart();
 
         return $query;
     }
@@ -94,14 +102,23 @@ class Select extends AbstractQuery
 
     private function getOrderPart(): string
     {
-        if ($this->order) {
-            $order = [];
-            foreach ($this->order as $field => $direction) {
-                $order[] = "`{$field}` " . ($direction === SORT_ASC ? 'ASC' : 'DESC');
-            }
-            return ' ORDER BY ' . implode(', ', $order);
+        if (empty($this->order)) {
+            return '';
         }
 
-        return '';
+        $order = [];
+        foreach ($this->order as $field => $direction) {
+            $order[] = "`{$field}` " . ($direction === SORT_ASC ? 'ASC' : 'DESC');
+        }
+        return ' ORDER BY ' . implode(', ', $order);
+    }
+
+    private function getOffsetPart(): string
+    {
+        if ($this->offset === null) {
+            return '';
+        }
+
+        return " OFFSET {$this->offset}";
     }
 }

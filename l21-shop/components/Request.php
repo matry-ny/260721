@@ -18,6 +18,12 @@ class Request
         return strtoupper($_SERVER['REQUEST_METHOD']) === 'POST';
     }
 
+    public function isAjax(): bool
+    {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+    }
+
     public function get(): Storage
     {
         return $this->get;

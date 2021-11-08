@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Cart;
 use app\models\entities\ProductEntity;
 use app\views\dto\products\ListDTO;
 use app\views\dto\products\ViewDTO;
@@ -10,25 +11,25 @@ use exceptions\NotFoundException;
 
 class ProductsController extends AbstractController
 {
-    public function actionView(int $id): void
+    public function actionView(int $id): string
     {
-        echo $this->render(
+        return $this->render(
             'products/view',
             new ViewDTO(['product' => $this->findProduct($id)])
         );
     }
 
-    public function actionList(): void
+    public function actionList(): string
     {
         $products = ProductEntity::findAll();
 
-        echo $this->render(
+        return $this->render(
             'products/list',
             new ListDTO(['products' => $products])
         );
     }
 
-    public function actionAdd(): void
+    public function actionAdd(): string
     {
         if ($this->request()->isPost()) {
             $product = new ProductEntity();
@@ -37,7 +38,20 @@ class ProductsController extends AbstractController
 
             $this->response()->redirect("/products/view/id/{$product->id}");
         }
-        echo $this->render('products/add');
+        return $this->render('products/add');
+    }
+
+    public function actionAddToCart()
+    {
+        if (!$this->request()->isAjax() || !$this->request()->isPost()) {
+            throw new NotFoundException('Request should be AJAX and POST');
+        }
+
+        $product = $this->findProduct($this->request()->post()->get('productId'));
+        $cart = new Cart();
+        $cart->addProduct($product);
+
+        return ['productsInCart' => $cart->getProductsCount()];
     }
 
     private function findProduct(int $id): ProductEntity

@@ -7,7 +7,7 @@ use components\AbstractController;
 
 class GuestController extends AbstractController
 {
-    public function actionLogin(): void
+    public function actionLogin(): string
     {
         if ($this->request()->isPost()) {
             $user = User::findOne(['login' => $this->request()->post()->get('login')]);
@@ -19,6 +19,6 @@ class GuestController extends AbstractController
                 'loginErrors', ['login' => 'Login or password is incorrect']
             );
         }
-        echo $this->render('guest/login');
+        return $this->render('guest/login');
     }
 }
