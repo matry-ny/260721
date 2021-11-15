@@ -18,6 +18,7 @@ services:
       - ./:/var/www
       - ./docker/nginx/2607.local.conf:/etc/nginx/conf.d/2607.local.conf
       - ./docker/nginx/2607-shop.local.conf:/etc/nginx/conf.d/2607-shop.local.conf
+      - ./docker/nginx/2607-chat.local.conf:/etc/nginx/conf.d/2607-chat.local.conf
     depends_on:
       - app
   db:
