@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(static function () {
+    Route::get('register', fn () => view('guest.register'));
+    Route::get('login', fn () => view('guest.login'));
+
+    Route::post('register', [GuestController::class, 'register']);
+    Route::post('login', [GuestController::class, 'login']);
+});
+
+Route::middleware('auth')->group(static function () {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('logout', [UserController::class, 'logout']);
 });
