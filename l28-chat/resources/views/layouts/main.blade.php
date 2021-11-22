@@ -6,28 +6,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.4.6.1.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-3" id="main-container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Chat</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Chat</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/logout">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -43,6 +26,8 @@
 
     </div>
     <script src="/js/jquery-3.6.0.min.js"></script>
-    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/bootstrap.4.6.1.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/f1af6bb8d5.js" crossorigin="anonymous"></script>
+    <script src="/js/app.js"></script>
 </body>
 </html>
