@@ -8,6 +8,7 @@
     <title>Chat</title>
     <link href="/css/bootstrap.4.6.1.min.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
+    <script src="/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="container mt-3" id="main-container">
@@ -25,9 +26,7 @@
         @yield('content')
 
     </div>
-    <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap.4.6.1.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/f1af6bb8d5.js" crossorigin="anonymous"></script>
-    <script src="/js/app.js"></script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container-fluid h-100">
-        <div class="row justify-content-center h-100">
-            <div class="col-md-4 col-xl-3 chat">
+        <div class="row justify-content-center h-100" id="chat-container">
+            <div class="col-md-5 col-xl-3 chat">
                 <div class="card mb-sm-3 mb-md-0 contacts_card">
                     <div class="card-header">
                         <div class="input-group">
@@ -15,82 +15,33 @@
                         </div>
                     </div>
                     <div class="card-body contacts_body">
-                        <ui class="contacts">
-                            <li class="active">
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
-                                             class="rounded-circle user_img">
-                                        <span class="online_icon"></span>
+                        <ul class="contacts">
+                            @foreach ($rooms as $room)
+                                <li class="active">
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            @if ($room->avatar)
+                                                <img src="{{ Config::get('params.rooms.avatarUrl') }}/{{ $room->avatar }}"
+                                                 class="rounded-circle user_img">
+                                            @else
+                                                <img src="{{ Config::get('params.rooms.defaultChannelAvatar') }}"
+                                                     class="rounded-circle user_img">
+                                            @endif
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            <span>{{ $room->title }}</span>
+                                            <p>0</p>
+                                        </div>
                                     </div>
-                                    <div class="user_info">
-                                        <span>Khalid</span>
-                                        <p>Kalid is online</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img
-                                            src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon offline"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>Taherah Big</span>
-                                        <p>Taherah left 7 mins ago</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img
-                                            src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>Sami Rafi</span>
-                                        <p>Sami is online</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img
-                                            src="http://profilepicturesdp.com/wp-content/uploads/2018/07/sweet-girl-profile-pictures-9.jpg"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon offline"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>Nargis Hawa</span>
-                                        <p>Nargis left 30 mins ago</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img
-                                            src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon offline"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>Rashid Samim</span>
-                                        <p>Rashid left 50 mins ago</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ui>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                     <div class="card-footer"></div>
                 </div>
             </div>
-            <div class="col-md-8 col-xl-6 chat">
+            <div class="col-md-7 col-xl-6 chat">
                 <div class="card">
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight">
@@ -100,7 +51,7 @@
                                 <span class="online_icon"></span>
                             </div>
                             <div class="user_info">
-                                <span>Chat with Khalid</span>
+                                <span>{{ Auth::user()->name }}</span>
                                 <p>1767 Messages</p>
                             </div>
                         </div>
@@ -190,12 +141,11 @@
                     </div>
                     <div class="card-footer">
                         <div class="input-group">
-                            <div class="input-group-append">
-                                <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-                            </div>
-                            <textarea name="" class="form-control type_msg"
+                            <textarea name="message"
+                                      id="message-field"
+                                      class="form-control type_msg"
                                       placeholder="Type your message..."></textarea>
-                            <div class="input-group-append">
+                            <div class="input-group-append" id="send-message-button">
                                 <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
                             </div>
                         </div>
@@ -236,5 +186,12 @@
             </div>
         </div>
     </div>
-
+    <script src="/js/chat.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#chat-container').Chat({
+                userId: {{ Auth::user()->id }}
+            });
+        });
+    </script>
 @stop
