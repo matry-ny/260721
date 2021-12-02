@@ -60,6 +60,11 @@
                             <ul>
                                 <li><a href="{{ route('profile') }}"><i class="fas fa-user-circle"></i> View profile</a></li>
                                 <li data-toggle="modal" data-target="#addRoomModal"><i class="fas fa-plus"></i> Add new room</li>
+                                <li>
+                                    <a href="#" id="export-link">
+                                        <i class="fas fa-file-excel"></i> Export to Excel
+                                    </a>
+                                </li>
                                 <li><a href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
                             </ul>
                         </div>

@@ -32,4 +32,7 @@ Route::middleware('auth')->group(static function () {
     Route::post('rooms/create', [RoomsController::class, 'create'])->name('createRoom');
     Route::get('logout', [UserController::class, 'logout'])->name('logout');
     Route::get('room/{roomId}/messages', [MessagesController::class, 'getMessages'])->where('roomId', '[0-9]+');
+    Route::get('room/{roomId}/export', [MessagesController::class, 'export'])
+        ->where('roomId', '[0-9]+')
+        ->name('export-messages');
 });

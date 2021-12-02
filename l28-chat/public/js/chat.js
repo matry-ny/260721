@@ -3,6 +3,7 @@ $.fn.Chat = function (params) {
     const CHAT_ADDRESS = 'http://2607-chat.local:2607';
     const TYPE_MESSAGE = 'message';
     const TYPE_SUBSCRIBE = 'subscribe';
+    const EXPORT_URL_TEMPLATE = 'room/{roomId}/export';
 
     let container = $(this);
     let properties = {
@@ -134,6 +135,10 @@ $.fn.Chat = function (params) {
         scrollMessages: function () {
             let messagesList = $('body').find('.msg_card_body');
             messagesList.animate({scrollTop: properties.messagesHeight}, 'fast');
+        },
+        getExportUrl: function ()
+        {
+            return EXPORT_URL_TEMPLATE.replace('{roomId}', properties.activeRoomId);
         }
     };
 
@@ -198,6 +203,8 @@ $.fn.Chat = function (params) {
             }, 10);
 
             methods.loadMessages();
+
+            container.find('#export-link').attr('href', methods.getExportUrl());
         },
         acceptMessage: function (e) {
             let message = JSON.parse(e.data);
