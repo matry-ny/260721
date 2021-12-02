@@ -15,6 +15,13 @@ return [
             'password' => 'skillup_pwd',
             'dbName' => 'skillup_db',
         ],
+//        'db' => [
+//            'driver' => 'mysql',
+//            'host' => 'tiba00.mysql.tools',
+//            'user' => 'tiba00_2607',
+//            'password' => 'Cy9&u^8N3y',
+//            'dbName' => 'tiba00_2607',
+//        ],
         'template' => [
             'templatesDir' => __DIR__ . '/../app/views/templates',
             'layoutsDir' => __DIR__ . '/../app/views/layouts',

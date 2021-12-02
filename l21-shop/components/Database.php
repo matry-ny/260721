@@ -32,7 +32,7 @@ class Database
     {
         if ($this->connection === null) {
             $this->connection = new PDO(
-                "{$this->driver}:host={$this->host};dbname={$this->dbName}",
+                "{$this->driver}:host={$this->host};dbname={$this->dbName};charset=UTF8",
                 $this->user,
                 $this->password
             );
